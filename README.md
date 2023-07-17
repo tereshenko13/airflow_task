@@ -1,2 +1,2 @@
-# airflow_task
+# DAG
 ![photo_2023-07-17_10-50-47.jpg](photo_2023-07-17_10-50-47.jpg)
