@@ -1,0 +1,38 @@
+#QUERY 1
+[{ $sort: { thumbsUpCount: -1 } }, { $limit: 5 }]
+
+#QUERY 2
+[
+  { $match: { content: { $exists: true } } },
+  {
+    $redact: {
+      $cond: [
+        { $lt: [{ $strLenCP: "$content" }, 5] },
+        "$$KEEP",
+        "$$PRUNE",
+      ],
+    },
+  },
+  { $limit: 6 },
+]
+
+#QUERY 3
+[
+  {
+    $group: {
+      _id: {
+        $dateFromString: {
+          dateString: "$at",
+        },
+      },
+      averageRating: { $avg: "$score" },
+    },
+  },
+  {
+    $project: {
+      _id: 0,
+      day: { $toDate: "$_id" },
+      averageRating: 1,
+    },
+  },
+]
